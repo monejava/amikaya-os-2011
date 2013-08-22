@@ -1,0 +1,194 @@
+**********************************************************************************************************************************************
+************************************************************** DOCUMENTAZIONE ****************************************************************
+**********************************************************************************************************************************************
+
+
+
+
+
+
+********************************************************************************************************************************************
+*                                                                  tcb.c                                                                   *
+********************************************************************************************************************************************
+
+
+============================================================ Variabili Globali: ============================================================
+
+
+HIDDEN tcb_t tcbTable[MAXTHREADS];	è un array di MAXTHREADS(definito in const11.h) elementi che contiene i nostri ThreadBLK.
+
+HIDDEN tcb_t tcbFree_h;			è un treadBLK che serve come testa per la lista(usato nella seconda e ultima versione del progetto).
+HIDDEN tcb_t *tcbFree_h = NULL;		è un puntatore a treadBLK che ci serviva per tenere la lista.
+
+
+============================================================ Funzioni Iniziali: ============================================================
+
+
+void initTcbs(void);
+PARAMETRI: 		/
+VALORE DI RITORNO: 	/
+COMMENTO: 		serve per inserire ogni elemento dell'array tcbTable nella lista tcbFree_h.
+
+
+void freeTcb(tcb_t *p);
+PARAMETRI: 		p è il puntatore all'elemento che si vuole inserire nella lista tcbFree_h
+VALORE DI RITORNO: 	/
+COMMENTO: 		serve a inserire p nella lista tcbFree_h.
+
+
+tcb_t *allocTcb(void);
+PARAMETRI: 		/
+VALORE DI RITORNO: 	restituisce un puntatore a un "nuovo" treadBLK.
+COMMENTO: 		se c'è ancora un elemento nella lista tcbFree_h lo elimina dalla lista e viene restituito come valore di ritorno, 
+			altrimenti restituisce NULL.
+
+
+========================================================== Funzioni Sulle Liste: ===========================================================
+
+
+void mkEmptyThreadQ(struct list_head *emptylist);
+PARAMETRI: 		emptylist è un puntatore a lista.
+VALORE DI RITORNO: 	/
+COMMENTO: 		inizializza emptylist ad essere una lista circolare. (nella prima versione abbiamo un 
+			ragionamento diverso spiegato nel README)
+
+
+int emptyThreadQ(struct list_head *head);
+PARAMETRI: 		head è un puntatore a lista.
+VALORE DI RITORNO: 	è un int che serve a capire se la lista è vuota o meno.
+COMMENTO: 		restiruisce TRUE o FALSE in base a se la lista puntata da head è vuota o meno.
+
+
+void insertThread(struct list_head *head, tcb_t *p);
+PARAMETRI: 		head è la testa della lista.
+			p è il nuovo elemento che vogliamo inserire.
+VALORE DI RITORNO: 	/
+COMMENTO: 		inserisce p nella lista puntata da head.
+
+
+tcb_t *removeThread(struct list_head *head);
+PARAMETRI: 		head è la testa della lista
+VALORE DI RITORNO: 	è il treadBLK che abbiamo tolto dalla lista
+COMMENTO: 		elimina il primo treadBLK che c'è nella lista e lo restituisce. se la lista è vuota restituisce NULL.
+
+
+tcb_t *outThread(struct list_head *head, tcb_t *p);
+PARAMETRI: 		head è la testa della lista
+				p è l'elemento che vogliamo eliminare dalla lista
+VALORE DI RITORNO: 	è il treadBLK che abbiamo tolto dalla lista
+COMMENTO: 		se nella lista puntata da head c'è il treadBLK p allora lo elimina e lo restituisce alla funzione.
+				altrimenti ritorna NULL.
+
+
+tcb_t *headThread(struct list_head *head);
+PARAMETRI: 		head è la testa della lista
+VALORE DI RITORNO: 	è il primo treadBLK che c'è nella lista
+COMMENTO: 		restituisce il primo treadBLK che si trova nella lista puntata da head.
+
+
+========================================================== Funzioni Sugli Alberi: ==========================================================
+
+
+int emptyChild(tcb_t *this);
+PARAMETRI: 		this è un puntatore alla lista dei child.
+VALORE DI RITORNO: 	è un int che serve a capire se la lista è vuota o meno.
+COMMENTO: 		restiruisce TRUE o FALSE in base a se la lista puntata da this è vuota o meno.
+
+void insertChild(tcb_t *parent, tcb_t *child);
+PARAMETRI: 		parent è il treadBLK a cui bisogna aggiungere un figlio.
+			child è il figlio da aggiungere a parent.
+VALORE DI RITORNO: 	/
+COMMENTO: 		serve ad aggiungere un figlio a un treadBLK genitore.
+
+tcb_t *removeChild(tcb_t *parent);
+PARAMETRI: 		parent è il treadBLK a cui bisogna eliminare un figlio.
+VALORE DI RITORNO: 	è il treadBLK che viene eliminato dalla lista dei figli del parent.
+COMMENTO: 		elimina il primo figlio dalla lista dei sibling. se la lista è vuota restituisce NULL, altrimenti 
+			il figlio appena eliminato.
+
+tcb_t *outChild(tcb_t *child);
+PARAMETRI: 		child è il figlio da eliminare dalla lista dei figli che ha il padre di child.
+VALORE DI RITORNO: 	è il treadBLK che viene eliminato dalla lista dei figli del parent.
+COMMENTO: 		se child ha un genitore allora viene eliminato dalla lista dei sibling e restituito. 
+			altrimenti restituisce NULL.
+
+
+
+********************************************************************************************************************************************
+*                                                                  msg.c                                                                   *
+********************************************************************************************************************************************
+
+
+============================================================ Variabili Globali: ============================================================
+
+
+HIDDEN msg_t msgTable[MAXMESSAGE];	è un array di MAXMESSAGE(definito in const11.h) elementi che contiene i nostri MESSAGEs.
+
+HIDDEN msg_t msgFree_h;			è un MESSAGE che serve come testa per la lista(usato nella seconda e ultima versione del progetto).
+HIDDEN msg_t *msgFree_h = NULL;		è un puntatore a MESSAGE che ci serviva per tenere la lista.
+
+
+============================================================ Funzioni Iniziali: ============================================================
+
+
+void initMsg(void);
+PARAMETRI: 		/
+VALORE DI RITORNO: 	/
+COMMENTO: 		serve per inserire ogni elemento dell'array msgTable nella lista msgFree_h.
+
+void freeMsg(msg_t *m);
+PARAMETRI: 		m è il puntatore all'elemento che si vuole inserire nella lista msgFree_h.
+VALORE DI RITORNO: 	/
+COMMENTO: 		serve a inserire m nella lista msgFree_h.
+
+msg_t *allocMsg(void);
+PARAMETRI: 		/
+VALORE DI RITORNO: 	restituisce un puntatore a un "nuovo" MESSAGE.
+COMMENTO: 		se c'è ancora un elemento nella lista msgFree_h lo elimina dalla lista e viene restituito come valore di ritorno, 
+			altrimenti restituisce NULL.
+
+
+========================================================== Funzioni Sulle Liste: ===========================================================
+
+
+void mkEmptyMessageQ(struct list_head *emptylist);
+PARAMETRI: 		emptylist è un puntatore a lista.
+VALORE DI RITORNO: 	/
+COMMENTO: 		inizializza emptylist ad essere una lista circolare. (nella prima versione abbiamo un 
+			ragionamento diverso spiegato nel README)
+
+
+int emptyMessageQ(struct list_head *head);
+PARAMETRI: 		head è un puntatore a lista.
+VALORE DI RITORNO: 	è un int che serve a capire se la lista è vuota o meno.
+COMMENTO: 		restiruisce TRUE o FALSE in base a se la lista puntata da head è vuota o meno.
+
+
+void insertMessage(struct list_head *head, msg_t *mp);
+PARAMETRI: 		head è la testa della lista.
+			mp è il nuovo elemento che vogliamo inserire.
+VALORE DI RITORNO: 	/
+COMMENTO: 		inserisce mp nella lista puntata da head.
+
+
+void pushMessage(struct list_head *head, msg_t *mp);
+PARAMETRI: 		head è la testa della lista.
+			mp è il nuovo elemento che vogliamo inserire.
+VALORE DI RITORNO: 	/
+COMMENTO: 		inserisce mp nella lista puntata da head.
+
+
+msg_t *popMessage(struct list_head *head, tcb_t *mp);
+PARAMETRI: 		head è la testa della lista
+			mp è l'elemento che vogliamo eliminare dalla lista
+VALORE DI RITORNO: 	è il MESSAGE che abbiamo tolto dalla lista
+COMMENTO: 		se mp è uguale a NULL allora restituisco il primo MESSAGE che c'è nella lista puntata da head.
+			invece se mp è diverso da NULL e nella lista di messaggi di mp c'è un elemento = a head
+			lo elimino e lo restituiso. Altrimenti restituisce NULL.			
+
+
+msg_t *headMessage(struct list_head *head);
+PARAMETRI: 		head è la testa della lista
+VALORE DI RITORNO: 	è il primo MESSAGE che c'è nella lista
+COMMENTO: 		restituisce il primo MESSAGE che si trova nella lista puntata da head.
+

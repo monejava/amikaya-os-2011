@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f1" displayName="uMPS_include" projectFiles="true">
+        <itemPath>header/uMPS_include/base.h</itemPath>
+        <itemPath>header/uMPS_include/const.h</itemPath>
+        <itemPath>header/uMPS_include/uMPStypes.h</itemPath>
+      </logicalFolder>
+      <itemPath>header/const11.h</itemPath>
+      <itemPath>header/listx.h</itemPath>
+      <itemPath>header/types11.h</itemPath>
+      <itemPath>header/utils.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="f1" displayName="Interface" projectFiles="true">
+      <itemPath>interface/boot.e</itemPath>
+      <itemPath>interface/exception.e</itemPath>
+      <itemPath>interface/interrupt.e</itemPath>
+      <itemPath>interface/msg.e</itemPath>
+      <itemPath>interface/p2test.0.2.e</itemPath>
+      <itemPath>interface/prgTrap.e</itemPath>
+      <itemPath>interface/scheduler.e</itemPath>
+      <itemPath>interface/ssi.e</itemPath>
+      <itemPath>interface/tcb.e</itemPath>
+      <itemPath>interface/tlbTrap.e</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>src/boot.c</itemPath>
+      <itemPath>src/exception.c</itemPath>
+      <itemPath>src/interrupt.c</itemPath>
+      <itemPath>src/msg.c</itemPath>
+      <itemPath>src/p2test.0.2.c</itemPath>
+      <itemPath>src/prgTrap.c</itemPath>
+      <itemPath>src/scheduler.c</itemPath>
+      <itemPath>src/ssi.c</itemPath>
+      <itemPath>src/tcb.c</itemPath>
+      <itemPath>src/tlbTrap.c</itemPath>
+      <itemPath>src/utils.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+      </compileType>
+      <item path="interface/boot.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/exception.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/interrupt.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/msg.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/p2test.0.2.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/prgTrap.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/scheduler.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/ssi.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/tcb.e" ex="false" tool="0" flavor="0">
+      </item>
+      <item path="interface/tlbTrap.e" ex="false" tool="0" flavor="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
