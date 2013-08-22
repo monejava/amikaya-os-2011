@@ -1,0 +1,105 @@
+#cartelle dove sono contenute le libreire mips
+LIBDIR = /usr/local/lib/umps2/
+SHAREDIR = /usr/local/share/umps2/
+
+#compilatore
+CC = mipsel-linux-gcc
+
+#linker
+LD = mipsel-linux-ld
+
+#parametri del compilatore
+#CFLAGS =  -pedantic -Wall -c //TODO
+CFLAGS =  -c
+
+#parametri del linker
+LDFLAGS = -T ${SHAREDIR}elf32ltsmip.h.umpscore.x ${LIBDIR}crtso.o ${LIBDIR}libumps.o
+
+#file oggetto
+OBJ =  boot.o exception.o interrupt.o msg.o ourFunction.o p2test.0.2.o prgTrap.o scheduler.o ssi.o tcb.o tlbTrap.o
+
+#cartella sorgenti
+SRC = src/
+
+#stringa di avvenuta compilazione
+COMPILED = "** Compilato $@"
+
+#nome del pacchetto tar
+TARNAME = amikaya11-phase1-umps.tar
+
+compile: ${OBJ}
+	@echo ${COMPILED}
+
+all: kernel post-build
+
+#dopo aver compilato e linkato tutto crea un tar che contiene il progetto
+package:all create-tar
+
+#azioni da compiere dopo compilazione e linking
+post-build: elf-2-umps put-in-dist-folder
+
+elf-2-umps:
+	umps2-elf2umps -k kernel
+	
+put-in-dist-folder:
+	mv kernel dist/kernel
+	mv kernel.core.umps dist/kernel.core.umps
+	mv kernel.stab.umps dist/kernel.stab.umps
+	@echo ** Creati i file per umps2 e posizionati nella cartella dist/
+
+create-tar:
+	tar -cf ${TARNAME} dist/ header/ interface/ ${SRC} readme Makefile Makefile_x86 AMIKaya.pdf AUTHORS
+	@echo ** Creato ${TARNAME}
+
+#compilazione e linkaggio della prima parte del progetto
+kernel: ${OBJ}
+	${LD} ${LDFLAGS} ${OBJ} -o $@
+	@echo ** Linkati $^ in $@
+	
+p2test.0.2.o: ${SRC}p2test.0.2.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+
+tcb.o: ${SRC}tcb.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+	
+msg.o: ${SRC}msg.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+	
+boot.o: ${SRC}boot.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+
+exception.o: ${SRC}exception.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED} 
+
+interrupt.o: ${SRC}interrupt.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED} 
+
+ourFunction.o: ${SRC}ourFunction.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED} 
+
+scheduler.o: ${SRC}scheduler.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED} 
+
+ssi.o: ${SRC}ssi.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+
+prgTrap.o: ${SRC}prgTrap.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+	
+tlbTrap.o: ${SRC}tlbTrap.c
+	${CC} ${CFLAGS} $<
+	@echo ${COMPILED}
+
+clean: 
+	rm -f *.o
+
